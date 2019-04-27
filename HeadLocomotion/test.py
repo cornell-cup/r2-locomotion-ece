@@ -187,11 +187,11 @@ def motor_command(x, y):
     ys = int(255 * clamp(float(y*50), -1.0, 1.0))
     send_data = 0
     
-    if x < 0:
+    if x > 0:
         send_data = R2Protocol.encode(b"BM", struct.pack("4B",
         dir(nx), clamp(abs(nx), 25, 230),
         dir(xs), clamp(abs(xs), 25, 230)))
-    elif x > 0:
+    elif x < 0:
         send_data = R2Protocol.encode(b"BM", struct.pack("4B",
         dir(xs), clamp(abs(xs), 25, 230),
         dir(px), clamp(abs(px), 25, 230)))
