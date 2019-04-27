@@ -184,6 +184,7 @@ def motor_command(x, y):
     xs = int(255 * clamp(float(x*50), -1.0, 1.0))
     n = int(255 * clamp(float(0*50), -1.0, 1.0))
     ys = int(255 * clamp(float(y*50), -1.0, 1.0))
+    send_data = 0
     #send_data = R2Protocol.encode(b"BM", struct.pack("4B",
         #dir(ls), clamp(abs(ls), 25, 230),
         #dir(rs), clamp(abs(rs), 25, 230)))
