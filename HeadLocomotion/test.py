@@ -181,11 +181,26 @@ def motor_command(x, y):
     print(x)
     print(y)
     global motors
-    ls = int(255 * clamp(float(x*50), -1.0, 1.0))
-    rs = int(255 * clamp(float(y*50), -1.0, 1.0))
-    send_data = R2Protocol.encode(b"BM", struct.pack("4B",
-        dir(ls), clamp(abs(ls), 25, 230),
-        dir(rs), clamp(abs(rs), 25, 230)))
+    xs = int(255 * clamp(float(x*50), -1.0, 1.0))
+    n = int(255 * clamp(float(0*50), -1.0, 1.0))
+    ys = int(255 * clamp(float(y*50), -1.0, 1.0))
+    #send_data = R2Protocol.encode(b"BM", struct.pack("4B",
+        #dir(ls), clamp(abs(ls), 25, 230),
+        #dir(rs), clamp(abs(rs), 25, 230)))
+    if x == -1:
+        send_data = R2Protocol.encode(b"LM", struct.pack("4B",
+            dir(xs), clamp(abs(xs), 25, 230)))
+        send_data = R2Protocol.encode(b"RM", struct.pack("4B",
+            dir(n), clamp(abs(n), 25, 230)))
+    if x == 1:
+        send_data = R2Protocol.encode(b"RM", struct.pack("4B",
+            dir(xs), clamp(abs(xs), 25, 230)))
+        send_data = R2Protocol.encode(b"LM", struct.pack("4B",
+            dir(n), clamp(abs(n), 25, 230)))
+    if y != 0:
+        send_data = R2Protocol.encode(b"BM", struct.pack("4B",
+            dir(ys), clamp(abs(ys), 25, 230),
+            dir(ys), clamp(abs(ys), 25, 230)))
 
     print (send_data)
     motors.write(send_data)
