@@ -182,19 +182,20 @@ def motor_command(x, y):
     print(y)
     global motors
     xs = int(255 * clamp(float(x*50), -1.0, 1.0))
-    n = int(255 * clamp(float(0*50), -1.0, 1.0))
+    nx = int(255 * clamp(float((x+1)*50), -1.0, 1.0))
+    px = int(255 * clamp(float((1-x)*50), -1.0, 1.0))
     ys = int(255 * clamp(float(y*50), -1.0, 1.0))
     send_data = 0
-    send_data = R2Protocol.encode(b"BM", struct.pack("4B",
+    
+    if x < 0:
+        send_data = R2Protocol.encode(b"BM", struct.pack("4B",
+        dir(nx), clamp(abs(nx), 25, 230),
+        dir(xs), clamp(abs(xs), 25, 230)))
+    elif x > 0:
+        send_data = R2Protocol.encode(b"BM", struct.pack("4B",
         dir(xs), clamp(abs(xs), 25, 230),
-        dir(ys), clamp(abs(ys), 25, 230)))
-    '''if x == -1:
-        send_data = R2Protocol.encode(b"LM", struct.pack("4B", dir(xs), clamp(abs(xs), 25, 230)))
-        send_data = R2Protocol.encode(b"RM", struct.pack("4B", dir(n), clamp(abs(n), 25, 230)))
-    if x == 1:
-        send_data = R2Protocol.encode(b"RM", struct.pack("4B", dir(xs), clamp(abs(xs), 25, 230)))
-        send_data = R2Protocol.encode(b"LM", struct.pack("4B", dir(n), clamp(abs(n), 25, 230)))
-    if y != 0:
+        dir(px), clamp(abs(px), 25, 230)))
+    else:
         send_data = R2Protocol.encode(b"BM", struct.pack("4B", dir(ys), clamp(abs(ys), 25, 230), dir(ys), clamp(abs(ys), 25, 230)))
     '''
     print (send_data)
