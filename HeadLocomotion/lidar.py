@@ -14,12 +14,7 @@ def run_lidar():
     #outfile = open('lidarResults.txt', 'w')
     
     print('Recording measurments... Press Crl+C to stop.')
-<<<<<<< HEAD
-    print(len(lidar.iter_measurments()))
-    '''
-=======
     length = 0
->>>>>>> 57d72081231675b4173a7efae82cb18ac65b108d
     for measurment in lidar.iter_measurments():
         i = 0
         for distance in measurment:
@@ -33,15 +28,8 @@ def run_lidar():
                     print("in return")
                     return False
             i = i + 1
-<<<<<<< HEAD
-    '''
-    print("before stop")
-    lidar.stop()
-    lidar.disconnect()
-=======
         if length > 3:
             lidar.stop()
             lidar.disconnect()
         length = length + 1
->>>>>>> 57d72081231675b4173a7efae82cb18ac65b108d
     #outfile.close()
