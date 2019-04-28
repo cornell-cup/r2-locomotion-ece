@@ -182,6 +182,7 @@ def open_periscope():
 	
 def show_guns():
 	print ("showing off dem guns...")
+	nerf.run_nerf_gun()
 	#react_with_sound (confirmation_final)
 	return 6
 	
