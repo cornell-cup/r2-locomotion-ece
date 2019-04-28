@@ -5,7 +5,7 @@ import sys
 from rplidar import RPLidar
 
 
-PORT_NAME = '/dev/ttyUSB0'
+PORT_NAME = '/dev/lidar1'
 
 
 def run_lidar():
