@@ -127,9 +127,6 @@ def run(ch, distance):
             degree = 0
             x = 0
             y = 0
-            if lidar.run_lidar() == False: #stop motors if lidar reads something within 12 inches
-                motor_command(0,0)
-                break
             if ch == 'x': #stop motors
                 motor_command(0,0)
                 break
@@ -150,6 +147,9 @@ def run(ch, distance):
             if ch != 'x' and ch != 'h': #control via xbox controller
                 motor_command(x, y)
                 head_command(degree)
+                if lidar.run_lidar() == False: #stop motors if lidar reads something within 12 inches
+                    motor_command(0,0)
+                    break
 
 def head_command(degree):
     print(degree)
