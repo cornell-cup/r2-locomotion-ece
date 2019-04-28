@@ -56,7 +56,7 @@ def clamp(x, l, u):
     return u
   return x
 
-motors = serial.Serial('/dev/ttyACM0', baudrate=115200, timeout=1)
+motors = serial.Serial('/dev/locomotion', baudrate=115200, timeout=1)
 
 
 def signal_handler(signal, frame):
@@ -119,7 +119,7 @@ thread = ListenThread()
 thread.start()
 '''
 
-def run(ch, distance):
+def run(distance):
     # Instantiate the controller
     joy = xbox.Joystick()
     while not joy.Back():
@@ -127,16 +127,7 @@ def run(ch, distance):
             degree = 0
             x = 0
             y = 0
-            if ch == 'x': #stop motors
-                motor_command(0,0)
-                break
-            elif ch == 'h': #shake head
-                head_command(1)
-                time.sleep(1)
-                head_command(-1)
-                time.sleep(1)
-                head_command(0)
-                break
+            
             if joy.rightTrigger() > 0:
                 degree = 1
             if joy.leftTrigger() > 0:
@@ -144,12 +135,11 @@ def run(ch, distance):
             x = joy.leftX()
             y = joy.leftY()
 
-            if ch != 'x' and ch != 'h': #control via xbox controller
-                motor_command(x, y)
-                head_command(degree)
-                if lidar.run_lidar() == False: #stop motors if lidar reads something within 12 inches
-                    motor_command(0,0)
-                    break
+            motor_command(x, y)
+            head_command(degree)
+            if lidar.run_lidar() == False: #stop motors if lidar reads something within 12 inches
+                motor_command(0,0)
+                break
 
 def head_command(degree):
     print(degree)
@@ -160,6 +150,12 @@ def head_command(degree):
     print(send_data)
     motors.write(send_data)
 
+def shake_head():
+    head_command(1)
+    time.sleep(0.5)
+    head_command(-1)
+    time.sleep(0.5)
+    head_command(0)
 
 def motor_command(x, y):
     print(x)
