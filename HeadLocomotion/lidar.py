@@ -31,5 +31,7 @@ def run_lidar():
         if length > 3:
             lidar.stop()
             lidar.disconnect()
+            print("disconnected lidar")
+            return True
         length = length + 1
     #outfile.close()
