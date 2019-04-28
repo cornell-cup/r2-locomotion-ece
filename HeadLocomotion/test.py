@@ -147,7 +147,7 @@ def run(ch, distance):
             x = joy.leftX()
             y = joy.leftY()
 
-            elif ch != 'x' and ch != 'h': #control via xbox controller
+            if ch != 'x' and ch != 'h': #control via xbox controller
                 motor_command(x, y)
                 head_command(degree)
 
