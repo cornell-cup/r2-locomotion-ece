@@ -6,7 +6,6 @@ File Created by Yanchen Zhan '22 (yz366)
 
 ### import respective packages
 import sys
-import test
 #import speech_recognition as sr
 #import pyaudio
 import nltk
@@ -16,11 +15,13 @@ nltk.download('averaged_perceptron_tagger')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as sid
 #from random import *
 import simpleaudio as sa
-#import json
+#import piimages_final
 #import client
-#import socket
-#import json
-#import time
+import socket
+import json
+import time
+import nerf
+import test
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
 from watson_developer_cloud.natural_language_understanding_v1 \
     import Features, EntitiesOptions, KeywordsOptions, SentimentOptions
@@ -75,8 +76,8 @@ def react_with_sound (sentiment_value):
 	
 	print ("about to play sound...")
 	
-	#lead_folder = "/home/pi/r2-tablet_GUI/R2FinalSounds/"
-	lead_folder = "R2FinalSounds/"
+	lead_folder = "/home/pi/Desktop/r2-tablet_GUI/R2FinalSounds/"
+	#lead_folder = "/home/yanchen-zhan/Documents/Cornell-Cup/r2-voice_recognition/Final/R2FinalSounds/"
 	#lead_folder = "C:\PythonProjects\\r2-voice_recognition\Final\R2FinalSounds\\"
 	sounds = {"confirmation":"R2OK.wav" , "wake up":"R2Awake.wav" , "angry":"R2Angry.wav" , "good":"R2Good.wav" , \
 	"happy":"R2Happy.wav" , "neutral":"R2Neutral.wav" , "sad":"R2Sad.wav" , \
@@ -132,7 +133,6 @@ def wave(methodcnt): # NOTE - INSTANTIATE WITH SPECIAL CASE
 	else:"""
 	print ("waving")
 	test.run('p',1)
-	
 	#	react_with_sound(confirmation_final)
 	return 0
 	
@@ -148,14 +148,14 @@ def greet(methodcnt):
 
 # have R2 take attendance
 def take_attendance(methodcnt):
-	global setup_bool
+	"""global setup_bool
 	if (setup_bool == False or methodcnt == False):
 		print ("in if statement")
 		setup_bool = True
-	else:
-		print ("checking in - F.R.")
-		react_with_sound(attendance_final)
-		client.main()	
+	else:"""
+	print ("checking in - F.R.")
+	react_with_sound(attendance_final)
+	client.CheckIn()	
 	return 2
 		
 def grab_item(item, methodcnt):
@@ -223,7 +223,11 @@ def sentiment(input):
 	print(sentiment_value)	
 	react_with_sound(sentiment_value)
 	return 7
-	
+
+def object_detection():
+	piimages_final.main()
+	return 8
+
 def main():
 	
 	methodcnt = False
@@ -234,7 +238,7 @@ def main():
 	
 	#test run to see if all r2 functionality working as expected
 	fndictGreetingsKeys = {"wave", "hello", "hi", "hey", "check", "attendance"}
-	fndictGetItemsKeys = {"water", "bottle", "stickers", "periscope"} # NEED TO CHECK SPELLING OF PERISCOPE FOR VOICE RECOGNITION
+	fndictGetItemsKeys = {"water", "bottle", "stickers", "periscope", "nerf", "guns", "gun"} # NEED TO CHECK SPELLING OF PERISCOPE FOR VOICE RECOGNITION
 	
 	#in formation of dictionaries, all functions being called
 	fndictGreetings = {"wave":dispatcher['wave1'], "hello":dispatcher['greet1'], "hi":dispatcher['greet1'], "hey":dispatcher['greet1'], "check":dispatcher['take_attendance1'], "attendance":dispatcher['take_attendance1']}
@@ -289,7 +293,6 @@ def main():
 			tokens = nltk.word_tokenize (spoken)
 			tagged = nltk.pos_tag(tokens)
 			print (tagged[0])
-			
 			
 			keywords = liteClient.getKeywords(spoken)
 					
