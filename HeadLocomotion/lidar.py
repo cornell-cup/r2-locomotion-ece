@@ -24,7 +24,7 @@ def run_lidar():
             if i == 3:
                 distance = distance / 25.4
                 print("distance " + str(distance))
-                if distance != 0 and distance < 18 and (angle > 245 or angle < 115):
+                if distance != 0 and distance < 12 and (angle > 245 or angle < 110):
                     lidar.stop()
                     lidar.disconnect()
                     print("in return")
