@@ -18,11 +18,9 @@ def run():
             i = 0
             print(measurment)
             for distance in measurment:
-                print(distance)
                 if distance == False and i != 0 and distance != 0.0 and distance != 0:
                     print("in return")
                     return False
-                print(i)
                 i = i + 1
     except KeyboardInterrupt:
         print('Stopping.')
