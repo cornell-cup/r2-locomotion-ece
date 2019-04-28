@@ -18,10 +18,10 @@ def run():
             i = 0
             for distance in measurment:
                 if i == 2:
-                    print("angle " + distance)
+                    print("angle " + str(distance))
                 if i == 3:
                     distance = distance / 25.4
-                    print("distance " + distance)
+                    print("distance " + str(distance))
                     if distance != 0 and distance < 12:
                         print("in return")
                         return False
