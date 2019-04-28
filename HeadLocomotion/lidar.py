@@ -28,11 +28,11 @@ def run_lidar():
                     print("in return")
                     return False
             i = i + 1
-        '''if length > 3:
+        if length > 20:
             lidar.stop()
             lidar.disconnect()
             print("disconnected lidar")
             return True
-        '''
+        
         length = length + 1
     #outfile.close()
