@@ -86,7 +86,7 @@ last_executed = time.time()
 interval = 5.0
 last_moved = -2
 
-#lidar
+'''
 HOST = '0.0.0.0'
 PORT = 11000
 lidar_data = -1
@@ -116,7 +116,7 @@ class ListenThread(Thread):
                 print (e)
 thread = ListenThread()
 thread.start()
-
+'''
 
 def run(ch, distance):
     # Instantiate the controller
