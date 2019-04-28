@@ -15,7 +15,11 @@ def run():
     try:
         print('Recording measurments... Press Crl+C to stop.')
         for measurment in lidar.iter_measurments():
-            return measurment
+            i = 0
+            for distance in measurment:
+                if distance == False and i != 0:
+                    return False
+                i = i + 1
     except KeyboardInterrupt:
         print('Stopping.')
     lidar.stop()
