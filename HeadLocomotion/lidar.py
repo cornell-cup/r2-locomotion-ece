@@ -17,13 +17,15 @@ def run():
         for measurment in lidar.iter_measurments():
             i = 0
             for distance in measurment:
-                '''if distance == False and i != 0 and distance != 0.0 and distance != 0:
-                    print("in return")
-                    return False
+                if i == 2:
+                    print("angle " + distance)
+                if i == 3:
+                    distance = distance / 25.4
+                    print("distance " + distance)
+                    if distance != 0 and distance < 12:
+                        print("in return")
+                        return False
                 i = i + 1
-                '''
-                distance = distance / 25.4
-                print(distance)
     except KeyboardInterrupt:
         print('Stopping.')
     lidar.stop()
