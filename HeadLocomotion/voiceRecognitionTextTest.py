@@ -131,8 +131,8 @@ def wave(methodcnt): # NOTE - INSTANTIATE WITH SPECIAL CASE
 		setup_bool = True
 	else:"""
 	print ("waving")
-	#test.run('p',1)
-	nerf.run_nerf_gun()
+	test.run('p',1)
+	
 	#	react_with_sound(confirmation_final)
 	return 0
 	
