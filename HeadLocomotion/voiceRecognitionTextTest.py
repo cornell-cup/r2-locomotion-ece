@@ -21,7 +21,9 @@ import socket
 import json
 import time
 import nerf
-import test
+#import precisearm
+#import strongarm
+import locomotion
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
 from watson_developer_cloud.natural_language_understanding_v1 \
     import Features, EntitiesOptions, KeywordsOptions, SentimentOptions
@@ -122,6 +124,7 @@ def stop():
 	#t0.start()
 	
 	#t0.join()
+	locomotion.run('x',1)
 	react_with_sound(sleep_final)
 	sys.exit()
 		
@@ -132,8 +135,11 @@ def wave(methodcnt): # NOTE - INSTANTIATE WITH SPECIAL CASE
 		setup_bool = True
 	else:"""
 	print ("waving")
-	test.run('p',1)
-	#	react_with_sound(confirmation_final)
+	'''
+	precisearm.open_ser_precise()
+	precisearm.wave()
+	'''
+        #react_with_sound(confirmation_final)
 	return 0
 	
 def greet(methodcnt):
