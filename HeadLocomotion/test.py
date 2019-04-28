@@ -12,6 +12,7 @@ import readchar
 import sys
 import json
 import terabee
+import lidar
 from threading import Thread
 
 
@@ -122,50 +123,33 @@ def run(ch, distance):
     # Instantiate the controller
     joy = xbox.Joystick()
     while not joy.Back():
-            global voice_data
-            global lidar_data
             time.sleep(0.1)
-            #print (voice_data)
             degree = 0
             x = 0
             y = 0
-            
-            print("in run")
+            if lidar.run_lidar() == False: #stop motors if lidar reads something within 12 inches
+                motor_command(0,0)
+                break
+            if ch == 'x': #stop motors
+                motor_command(0,0)
+                break
+            elif ch == 'h': #shake head
+                head_command(1)
+                time.sleep(1)
+                head_command(-1)
+                time.sleep(1)
+                head_command(0)
+                break
             if joy.rightTrigger() > 0:
                 degree = 1
             if joy.leftTrigger() > 0:
                 degree = -1
             x = joy.leftX()
             y = joy.leftY()
-            if ch == 'x':
-                x = 0
-                y = 0
-            if ch == 'w':
-                x = -1
-                y = -1
-            if ch == 's':
-                x = 1
-                y = 1
-            if ch == 'a':
-                x = 1
-                y = -1
-            if ch == 'd':
-                x = -1
-                y = 1
-            if ch == 'h':
-                head_command(1)
-                time.sleep(1)
-                head_command(-1)
-                time.sleep(1)
-                head_command(0)
-            print("lidar in run")
-            print(lidar_data)
-            if int(lidar_data) == 1:
-                print("stop")
-                x = 0
-                y = 0
-            motor_command(x, y)
-            head_command(degree)
+
+            elif ch != 'x' and ch != 'h': #control via xbox controller
+                motor_command(x, y)
+                head_command(degree)
 
 def head_command(degree):
     print(degree)
