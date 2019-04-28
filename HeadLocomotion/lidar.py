@@ -19,7 +19,7 @@ def run(path):
             line = '\t'.join(str(v) for v in measurment)
             outfile.write(line + '\n')
     except KeyboardInterrupt:
-        print('Stoping.')
+        print('Stopping.')
     lidar.stop()
     lidar.disconnect()
     outfile.close()
