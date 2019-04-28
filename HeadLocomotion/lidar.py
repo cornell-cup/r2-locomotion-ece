@@ -28,7 +28,7 @@ def run_lidar():
                     print("in return")
                     return False
             i = i + 1
-        if length > 20:
+        if length > 200:
             lidar.stop()
             lidar.disconnect()
             print("disconnected lidar")
