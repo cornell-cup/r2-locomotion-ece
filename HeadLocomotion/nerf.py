@@ -6,8 +6,8 @@ commands = ["M2D130E", "M1D130E", "M2D80E", "M1D180E", "M7D0E"]
 init = ["M3D1E", "M3D2E", "M4D1E", "M4D2E"] #move nerf gun outward, inward, lens aperture open, close
 
 def run_nerf_gun():
-    ser_nerf.write(init[0].encode('utf-8'))
-    ser_nerf.write(init[2].encode('utf-8'))
+    #ser_nerf.write(init[0].encode('utf-8'))
+    #ser_nerf.write(init[2].encode('utf-8'))
     print("Enter nerf gun wsad controls. Press f to fire. Press x to exit.")
     while(True):
         control = input()
