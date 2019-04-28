@@ -22,10 +22,10 @@ def run_nerf_gun():
         if control == "f":
             ser_nerf.write(commands[4].encode('utf-8')) 
         if control == "x":
-            ser_nerf.close()
-            time.sleep(0.2)
             ser_nerf.write(init[1].encode('utf-8'))
             ser_nerf.write(init[3].encode('utf-8'))
+            time.sleep(0.2)
+            ser_nerf.close()
             break
     
           
