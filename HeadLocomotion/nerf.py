@@ -12,7 +12,8 @@ def run_nerf_gun():
     while(True):
         control = input()
         if control == "w":
-            ser_nerf.write(commands[0].encode('utf-8'))
+            #ser_nerf.write(commands[0].encode('utf-8'))
+            print("in w ")
         '''
         if control == "s":
             ser_nerf.write(commands[1].encode('utf-8'))
