@@ -15,14 +15,12 @@ nltk.download('averaged_perceptron_tagger')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as sid
 #from random import *
 import simpleaudio as sa
-#import piimages_final
-#import client
+import piimages_final
+import client
 import socket
 import json
 import time
 import nerf
-#import precisearm
-#import strongarm
 import locomotion
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
 from watson_developer_cloud.natural_language_understanding_v1 \
@@ -50,7 +48,7 @@ sleep_final = 997
 move_final = 996
 attendance_final = 995
 sentiment_value = 0
-		
+
 """
 listen to user statement in mic
 returns spoken words from user OR 
@@ -69,23 +67,22 @@ def listen(r, mic):
 		print ("What are you saying?") #testing
 		return ""
 
-
 """
 plays respective sound from speakers
 based on sentiment analysis value
 """
 def react_with_sound (sentiment_value):
-	
+
 	print ("about to play sound...")
-	
-	lead_folder = "R2FinalSounds/"
+
+	lead_folder = "/home/pi/Desktop/r2-tablet_GUI/R2FinalSounds/"
 	#lead_folder = "/home/yanchen-zhan/Documents/Cornell-Cup/r2-voice_recognition/Final/R2FinalSounds/"
 	#lead_folder = "C:\PythonProjects\\r2-voice_recognition\Final\R2FinalSounds\\"
 	sounds = {"confirmation":"R2OK.wav" , "wake up":"R2Awake.wav" , "angry":"R2Angry.wav" , "good":"R2Good.wav" , \
 	"happy":"R2Happy.wav" , "neutral":"R2Neutral.wav" , "sad":"R2Sad.wav" , \
 	"sleep":"R2Sleep.wav", "no clue":"R2Confused.wav" , "move":"R2Move.wav" , \
 	"attendance":"R2Attendance.wav"}
-	
+
 	if (sentiment_value == confirmation_final):
 		play_sound(lead_folder + sounds["confirmation"])
 	elif (sentiment_value == no_clue_final):
@@ -117,17 +114,20 @@ def play_sound(file_name):
 
 def stop():
 	print ("emergency invoked")
-	
+
 	#start exit procedure here
 	## begin by creating threads to send poweroff commands to each arduino asynchronously (if feasible)
 	#t0 = threading.thread(target = shutdown, args = ("",))
 	#t0.start()
-	
+
 	#t0.join()
-	locomotion.run('x',1)
 	react_with_sound(sleep_final)
 	sys.exit()
-		
+
+def move():
+	print (moving)
+	return 999
+
 def wave(methodcnt): # NOTE - INSTANTIATE WITH SPECIAL CASE
 	"""global setup_bool
 	# initial bootup
@@ -135,13 +135,9 @@ def wave(methodcnt): # NOTE - INSTANTIATE WITH SPECIAL CASE
 		setup_bool = True
 	else:"""
 	print ("waving")
-	'''
-	precisearm.open_ser_precise()
-	precisearm.wave()
-	'''
-        #react_with_sound(confirmation_final)
+	#	react_with_sound(confirmation_final)
 	return 0
-	
+
 def greet(methodcnt):
 	"""global setup_bool
 	if (setup_bool == False or methodcnt == False):
@@ -163,7 +159,12 @@ def take_attendance(methodcnt):
 	react_with_sound(attendance_final)
 	client.CheckIn()	
 	return 2
-		
+
+def make_friends(name):
+    friend = name[len("my name is "):] #index where the first name appears
+    client.MakeFriend(friend)
+    return 9
+
 def grab_item(item, methodcnt):
 	"""global setup_bool
 	if (setup_bool == False or methodcnt == False):
@@ -176,7 +177,7 @@ def grab_item(item, methodcnt):
 		print ("grabbing " + item)
 	#	react_with_sound (confirmation_final)
 	return 3
-	
+
 def spit_info():
 	print ("info spit")
 	#react_with_sound (confirmation_final)
@@ -186,13 +187,12 @@ def open_periscope():
 	print ("opening periscope")
 	#react_with_sound (confirmation_final)
 	return 5
-	
+
 def show_guns():
 	print ("showing off dem guns...")
-	nerf.run_nerf_gun()
 	#react_with_sound (confirmation_final)
 	return 6
-	
+
 #implement threading in here
 #locks implemented to prevent any conflict in data retrieval
 def writeToVoice(input):
@@ -222,10 +222,10 @@ def sentiment(input):
 		document = sentiment['document']
 		score = document['score']
 		sentiment_value = float(score)
-			
+
 	except:
 		sentiment_value = sid().polarity_scores(input)['compound']
-			
+
 	print(sentiment_value)	
 	react_with_sound(sentiment_value)
 	return 7
@@ -235,23 +235,23 @@ def object_detection():
 	return 8
 
 def main():
-	
+
 	methodcnt = False
-	
+
 	#method dispatcher to connect to functions
 	dispatcher = {'wave1':wave, 'greet1':greet, 'take_attendance1':take_attendance, 'grab_item1':grab_item}
 	# https://www.reddit.com/r/Python/comments/7udbs1/using_python_dict_to_call_functions_based_on_user/
-	
+
 	#test run to see if all r2 functionality working as expected
 	fndictGreetingsKeys = {"wave", "hello", "hi", "hey", "check", "attendance"}
 	fndictGetItemsKeys = {"water", "bottle", "stickers", "periscope", "nerf", "guns", "gun"} # NEED TO CHECK SPELLING OF PERISCOPE FOR VOICE RECOGNITION
-	
+
 	#in formation of dictionaries, all functions being called
 	fndictGreetings = {"wave":dispatcher['wave1'], "hello":dispatcher['greet1'], "hi":dispatcher['greet1'], "hey":dispatcher['greet1'], "check":dispatcher['take_attendance1'], "attendance":dispatcher['take_attendance1']}
 	fndictGetItems = {"water":dispatcher['grab_item1'], "bottle":dispatcher['grab_item1'], "stickers":dispatcher['grab_item1'], "periscope":dispatcher['grab_item1'], "nerf":dispatcher['grab_item1'], "guns":dispatcher['grab_item1'], "gun":dispatcher['grab_item1']}
 	methodcnt = True
 	setup_bool = True
-	
+
 	### opens microphone instance that takes speech from human to convert to text
 	#r = sr.Recognizer()
 	#mic = sr.Microphone(2)
@@ -262,74 +262,80 @@ def main():
 		#spoken_text = listen(r, mic)
 		#spoken_text = spoken_text.lower()
 		print("The following startup phrase was said:\n" + spoken_text + "\n")
-		
+
 		# R2 unsure of input
 		if (spoken_text == ""):
 			print ("What?")
 			react_with_sound(no_clue_final)
-		
+
 		elif ("r2 stop" in spoken_text):
 			#write(spoken_text)
 			stop()
-		
+
 		elif ("hey r2" in spoken_text):
 			print ("awake")
 			react_with_sound(wakeup_final)
 			break			
-	
+
 	# R2 waits to hear what user wants - CHANGE PROMPTS HERE
 	while (True):
-		
+
 		spoken = input("enter command or sentence: ")
 		#spoken = simplify_text(listen (r, mic))
 		#spoken = spoken.lower()
 		print("The following text was said:\n" + spoken + "\n")
-		
+
 		if ("r2 stop" in spoken):
 			#write(spoken_text)
 			stop()
-		
+
 		# R2 unsure of input
 		elif (spoken == ""):
 			print ("What?")
 			react_with_sound(no_clue_final)
-		
+
+		elif ("what do you see" in spoken):
+			object_detection()
+        
+		elif ("make friends" in spoken):
+			make_friends("My name is Rong")
+
 		else: 
 			#use NLTK to determine part of speech of first word spoken
 			tokens = nltk.word_tokenize (spoken)
 			tagged = nltk.pos_tag(tokens)
 			print (tagged[0])
-			
+
 			keywords = liteClient.getKeywords(spoken)
-					
+
 			#if question desired about Cornell Cup
 			if ("cup" in keywords and "cornell" in keywords or "competition" in keywords):
 				spit_info()
-				
+
 			#run through commands first
 			elif ("wave" in spoken or "high five" in spoken or "VB" in tagged[0] or "JJ" in tagged[0]):
-				
+
 				if ("high five" in spoken):
 					keywords.append("high five")
-					
+
 				else:
 					for x in range(0, len(keywords)):
-							
+
 						word = keywords[x]
 						print (word)
-							
+
 						react_with_sound (confirmation_final)
-								
+
 						if (word in fndictGreetingsKeys):	
 							print(fndictGreetings[word](methodcnt))
 							print ("in fndictGreetingKeys")
 							break
-						
+
 						elif (word in fndictGetItemsKeys):
 							print(fndictGetItems[word](word, methodcnt))
 							print ("in fndictGetItemsKey")
 							break
-			
+
 			else:				
 				#sentiment analysis
 				try:				
@@ -344,21 +350,21 @@ def main():
 					document = sentiment['document']
 					score = document['score']
 					sentiment_value = float(score)
-					
+
 				except:
 					sentiment_value = sid().polarity_scores(spoken)['compound']
-				
-					
+
+
 				print(sentiment_value)	
 				react_with_sound(sentiment_value)
-		
+
 		t1 = threading.Thread(target = writeToVoice, args=(spoken,))
 		t2 = threading.Thread(target = writeToSentiment, args=(sentiment_value,))
 		t1.start()
 		t2.start()
 		t1.join()
 		t2.join()
-			
+
 main()
 
 #multithreading plan: add locks to prevent GUI program from accessing text file data too quickly while the text file is writing
