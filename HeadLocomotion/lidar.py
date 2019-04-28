@@ -8,7 +8,7 @@ from rplidar import RPLidar
 PORT_NAME = '/dev/ttyUSB0'
 
 
-def run():
+def run_lidar():
     '''Main function'''
     lidar = RPLidar(PORT_NAME)
     #outfile = open('lidarResults.txt', 'w')
@@ -32,6 +32,3 @@ def run():
     lidar.stop()
     lidar.disconnect()
     #outfile.close()
-
-if __name__ == '__main__':
-    run()
